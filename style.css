@@ -1,17 +1,16 @@
 /* =========================
-   STYLE.CSS V2 - PARTE 1
+   STYLE.CSS V3 - COMPATÍVEL COM HTML ATUAL
+   Feira de Pitanga
    ========================= */
 
-/* RESET */
+/* =========================
+   RESET + BASE
+   ========================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Arial", sans-serif;
-}
-
-html {
-  scroll-behavior: smooth;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -20,83 +19,129 @@ body {
   line-height: 1.6;
 }
 
-/* VARIÁVEIS */
-:root {
-  --primary: #16a34a;
-  --secondary: #0f172a;
-  --accent: #38bdf8;
-  --light: #f4f7fb;
-  --dark: #0f172a;
-  --text: #1f2937;
-  --card: #ffffff;
-  --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-}
-
-/* LINKS */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-a:hover {
-  opacity: 0.85;
+/* =========================
+   LOADING SCREEN
+   ========================= */
+#loadingScreen {
+  position: fixed;
+  inset: 0;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #fff;
+  border-top: 4px solid #38bdf8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* =========================
+   ACESSIBILIDADE
+   ========================= */
+.accessibility-box {
+  position: fixed;
+  left: 10px;
+  top: 120px;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 1000;
+}
+
+.accessibility-box button {
+  padding: 6px;
+  border: none;
+  background: #0f172a;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 /* =========================
    HEADER
    ========================= */
 header {
-  background: var(--secondary);
+  background: #0f172a;
   color: white;
-  padding: 15px 0;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: var(--shadow);
-}
-
-header .container {
-  width: 90%;
-  max-width: 1200px;
-  margin: auto;
+  padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-header h1 {
-  font-size: 22px;
+.logo {
   font-weight: bold;
-  color: var(--light);
+  font-size: 18px;
 }
 
-nav ul {
-  list-style: none;
+nav {
   display: flex;
-  gap: 18px;
+  gap: 15px;
 }
 
-nav ul li a {
+nav a {
   color: white;
-  font-weight: 600;
+  font-weight: 500;
   transition: 0.3s;
 }
 
-nav ul li a:hover {
-  color: var(--accent);
+nav a:hover {
+  color: #38bdf8;
+}
+
+.header-actions button {
+  margin-left: 10px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#cartBtn {
+  background: #38bdf8;
+  color: #0f172a;
+}
+
+#loginBtn {
+  background: #16a34a;
+  color: white;
+}
+
+#mobileMenuBtn {
+  display: none;
 }
 
 /* =========================
-   HERO SECTION
+   HERO
    ========================= */
 .hero {
-  height: 85vh;
-  background: linear-gradient(
-    135deg,
-    var(--secondary),
-    #1e3a8a,
-    var(--primary)
-  );
+  height: 90vh;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
   color: white;
   display: flex;
   align-items: center;
@@ -109,31 +154,59 @@ nav ul li a:hover {
   max-width: 700px;
 }
 
-.hero h2 {
-  font-size: 48px;
-  margin-bottom: 15px;
+.hero h1 {
+  font-size: 42px;
 }
 
 .hero p {
-  font-size: 18px;
+  margin-top: 10px;
   opacity: 0.9;
 }
 
-/* BOTÃO PRINCIPAL */
-.btn {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 28px;
-  background: var(--accent);
-  color: var(--dark);
-  font-weight: bold;
-  border-radius: 8px;
-  transition: 0.3s ease;
+.badge {
+  background: #16a34a;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
 }
 
-.btn:hover {
-  transform: scale(1.05);
-  background: #0ea5e9;
+.hero-buttons {
+  margin-top: 20px;
+}
+
+.primary-btn {
+  background: #38bdf8;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* =========================
+   PRÓXIMA FEIRA
+   ========================= */
+.next-fair {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.next-fair-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  text-align: center;
 }
 
 /* =========================
@@ -143,535 +216,357 @@ nav ul li a:hover {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-  padding: 60px 10%;
-  background: var(--light);
+  padding: 40px;
 }
 
-.stat-box {
-  background: var(--card);
-  padding: 25px;
-  text-align: center;
+.stat-card {
+  background: white;
+  padding: 20px;
   border-radius: 12px;
-  box-shadow: var(--shadow);
-  transition: 0.3s;
-}
-
-.stat-box:hover {
-  transform: translateY(-5px);
-}
-
-.stat-box h3 {
-  font-size: 28px;
-  color: var(--primary);
-}
-
-.stat-box p {
-  margin-top: 5px;
-  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
 /* =========================
    DESTAQUES
    ========================= */
-.destaques {
-  padding: 60px 10%;
-  background: #ffffff;
-}
-
-.section-title {
+.featured {
+  padding: 40px;
   text-align: center;
-  font-size: 32px;
-  margin-bottom: 40px;
-  color: var(--dark);
 }
 
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background: var(--card);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-6px);
-}
-
-/* =========================
-   STYLE.CSS V2 - PARTE 2
-   ========================= */
-
-/* =========================
-   DASHBOARD
-   ========================= */
-.dashboard {
-  padding: 60px 10%;
-  background: #f4f7fb;
-}
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 20px;
-}
-
-.sidebar {
-  background: var(--secondary);
-  color: white;
-  padding: 20px;
-  border-radius: 12px;
-  height: fit-content;
-}
-
-.sidebar ul {
-  list-style: none;
-}
-
-.sidebar ul li {
-  margin: 15px 0;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.sidebar ul li:hover {
-  color: var(--accent);
-}
-
-.dashboard-content {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-}
-
-/* =========================
-   CATÁLOGO
-   ========================= */
-.catalogo {
-  padding: 60px 10%;
-  background: #ffffff;
-}
-
-.catalogo-filtros {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  justify-content: center;
-}
-
-.filtro-btn {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 8px;
-  background: var(--light);
-  cursor: pointer;
-  transition: 0.3s;
-  font-weight: 600;
-}
-
-.filtro-btn:hover {
-  background: var(--accent);
-  color: var(--dark);
-}
-
-/* =========================
-   PRODUTOS
-   ========================= */
-.produtos {
+.featured-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
 }
 
-.produto-card {
-  background: var(--card);
+.featured-card {
+  background: white;
+  padding: 20px;
   border-radius: 12px;
-  box-shadow: var(--shadow);
-  padding: 15px;
-  transition: 0.3s;
+}
+
+/* =========================
+   DASHBOARD
+   ========================= */
+.dashboard {
+  padding: 40px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
   text-align: center;
 }
 
-.produto-card:hover {
-  transform: translateY(-5px);
+/* =========================
+   CATÁLOGO
+   ========================= */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
-.produto-card img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.produto-card h3 {
-  margin: 10px 0 5px;
-  font-size: 18px;
-}
-
-.produto-card p {
-  font-size: 14px;
-  color: #555;
-}
-
-.produto-card button {
-  margin-top: 10px;
-  padding: 10px;
+.filter-btn {
+  padding: 8px 12px;
   border: none;
-  background: var(--primary);
-  color: white;
   border-radius: 8px;
+  background: #e5e7eb;
   cursor: pointer;
-  transition: 0.3s;
 }
 
-.produto-card button:hover {
-  background: #15803d;
+.filter-btn.active {
+  background: #16a34a;
+  color: white;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
 
 /* =========================
    PRODUTORES
    ========================= */
-.produtores {
-  padding: 60px 10%;
-  background: #f4f7fb;
+.producer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
 
-.produtor-card {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+.producer-card {
   background: white;
   padding: 15px;
   border-radius: 12px;
-  box-shadow: var(--shadow);
-  margin-bottom: 15px;
-  transition: 0.3s;
-}
-
-.produtor-card:hover {
-  transform: translateX(5px);
-}
-
-.produtor-card img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-}
-
-/* =========================
-   AGRO IA / CHATBOT
-   ========================= */
-.chatbot {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 320px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.chat-header {
-  background: var(--secondary);
-  color: white;
-  padding: 10px;
-  font-weight: bold;
   text-align: center;
 }
 
-.chat-body {
-  height: 250px;
-  overflow-y: auto;
-  padding: 10px;
-  font-size: 14px;
+.producer-image {
+  width: 60px;
+  height: 60px;
+  background: #d1d5db;
+  border-radius: 50%;
+  margin: auto;
 }
 
-.chat-input {
-  display: flex;
-  border-top: 1px solid #ddd;
+/* =========================
+   AGROIA
+   ========================= */
+.ia-section {
+  padding: 40px;
 }
 
-.chat-input input {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  outline: none;
+.info-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
 
-.chat-input button {
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
+.info-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
 }
 
 /* =========================
    SOBRE
    ========================= */
-.sobre {
-  padding: 60px 10%;
+.about-section {
+  padding: 40px;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.about-highlights {
+  display: grid;
+  gap: 10px;
+}
+
+.highlight-box {
   background: white;
-  text-align: center;
-}
-
-.sobre p {
-  max-width: 800px;
-  margin: auto;
-  font-size: 16px;
-  color: #555;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 /* =========================
-   RESPONSIVIDADE PARCIAL
+   SEMINÁRIO
    ========================= */
-@media (max-width: 900px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .chatbot {
-    width: 90%;
-    right: 5%;
-  }
+.seminar-section {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
 }
 
-/* =========================
-   STYLE.CSS V2 - PARTE 3
-   FINAL COMPLETO
-   ========================= */
-
-/* =========================
-   SEMINÁRIO / EVENTOS
-   ========================= */
-.seminario {
-  padding: 60px 10%;
-  background: #f4f7fb;
-}
-
-.evento-card {
+.seminar-card {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: var(--shadow);
-  margin-bottom: 20px;
-  transition: 0.3s;
+  width: 100%;
+  max-width: 500px;
 }
 
-.evento-card:hover {
-  transform: scale(1.02);
-}
-
-.evento-card h3 {
-  margin-bottom: 10px;
+.seminar-card input {
+  width: 100%;
+  margin: 5px 0;
+  padding: 10px;
 }
 
 /* =========================
    COMENTÁRIOS
    ========================= */
-.comentarios {
-  padding: 60px 10%;
-  background: white;
+.comments-section {
+  padding: 40px;
 }
 
-.comentario {
-  background: #f4f7fb;
-  padding: 15px;
-  border-radius: 10px;
+#commentInput {
+  width: 100%;
+  padding: 10px;
   margin-bottom: 10px;
-  box-shadow: var(--shadow);
 }
 
-.comentario strong {
-  color: var(--primary);
+#commentBtn {
+  padding: 10px;
+  background: #0f172a;
+  color: white;
+  border: none;
 }
 
 /* =========================
-   CARRINHO
+   CARRINHO SIDEBAR
    ========================= */
-.carrinho {
+#cartSidebar {
   position: fixed;
-  top: 80px;
+  right: -400px;
+  top: 0;
+  width: 350px;
+  height: 100%;
+  background: white;
+  box-shadow: -10px 0 25px rgba(0,0,0,0.1);
+  transition: 0.3s;
+  padding: 20px;
+  z-index: 2000;
+}
+
+#cartSidebar.active {
+  right: 0;
+}
+
+/* =========================
+   CHATBOT
+   ========================= */
+#chatToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #16a34a;
+  border: none;
+  padding: 15px;
+  border-radius: 50%;
+  color: white;
+}
+
+#chatWindow {
+  position: fixed;
+  bottom: 80px;
   right: 20px;
   width: 300px;
   background: white;
   border-radius: 12px;
-  box-shadow: var(--shadow);
-  padding: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   display: none;
   flex-direction: column;
-  z-index: 2000;
 }
 
-.carrinho h3 {
-  margin-bottom: 10px;
-}
-
-.carrinho-item {
+.chat-header {
+  background: #0f172a;
+  color: white;
+  padding: 10px;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 14px;
 }
 
-.carrinho-total {
-  margin-top: 10px;
-  font-weight: bold;
+#chatMessages {
+  height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.quick-questions button {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  background: #e5e7eb;
+  margin-top: 5px;
 }
 
 /* =========================
-   LOGIN / PERFIL
+   LOGIN
    ========================= */
-.login {
-  padding: 60px 10%;
-  display: flex;
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
   justify-content: center;
+  align-items: center;
 }
 
-.login-form {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  width: 100%;
-  max-width: 400px;
-}
-
-.login-form input {
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-/* PERFIL */
-.perfil {
-  padding: 60px 10%;
-}
-
-.perfil-card {
+.modal-content {
   background: white;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: var(--shadow);
+}
+
+/* =========================
+   PERFIL
+   ========================= */
+.profile-section {
+  padding: 40px;
   text-align: center;
+}
+
+.profile-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
 }
 
 /* =========================
    NEWSLETTER
    ========================= */
 .newsletter {
-  padding: 60px 10%;
-  background: var(--secondary);
-  color: white;
+  padding: 40px;
   text-align: center;
+  background: #0f172a;
+  color: white;
 }
 
-.newsletter input {
-  padding: 12px;
-  width: 250px;
+.newsletter-form input {
+  padding: 10px;
+}
+
+.newsletter-form button {
+  padding: 10px;
+  background: #38bdf8;
   border: none;
-  border-radius: 8px;
-  margin-top: 10px;
-}
-
-.newsletter button {
-  padding: 12px 15px;
-  border: none;
-  background: var(--accent);
-  color: var(--dark);
-  border-radius: 8px;
-  cursor: pointer;
-  margin-left: 10px;
-  transition: 0.3s;
-}
-
-.newsletter button:hover {
-  transform: scale(1.05);
 }
 
 /* =========================
    FOOTER
    ========================= */
 footer {
-  background: var(--dark);
+  background: #0f172a;
   color: white;
+  padding: 40px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.footer-bottom {
   text-align: center;
-  padding: 30px 10%;
-  margin-top: 40px;
-}
-
-footer p {
-  font-size: 14px;
-  opacity: 0.8;
+  margin-top: 20px;
+  font-size: 12px;
 }
 
 /* =========================
-   ANIMAÇÕES
-   ========================= */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.card,
-.produto-card,
-.evento-card {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-/* =========================
-   RESPONSIVIDADE FINAL
+   RESPONSIVO FINAL
    ========================= */
 @media (max-width: 768px) {
-  .hero h2 {
-    font-size: 32px;
+  nav {
+    display: none;
   }
 
-  .hero p {
-    font-size: 16px;
+  #mobileMenuBtn {
+    display: block;
   }
 
-  nav ul {
-    flex-direction: column;
-    gap: 10px;
+  .about-content {
+    grid-template-columns: 1fr;
   }
 
-  .newsletter input {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-  .newsletter button {
-    width: 100%;
-    margin-left: 0;
-  }
-
-  .carrinho {
-    width: 90%;
-    right: 5%;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-title {
-    font-size: 24px;
-  }
-
-  .btn {
-    width: 100%;
-    text-align: center;
+  .hero h1 {
+    font-size: 28px;
   }
 }
