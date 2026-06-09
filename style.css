@@ -1,26 +1,32 @@
-/* =========================
-   RESET
-========================= */
+/* ===================================
+   FEIRA DE PITANGA V2
+   STYLE.CSS - PARTE 1
+=================================== */
+
+/* ========= RESET ========= */
 
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
+    scroll-behavior:smooth;
 }
 
 :root{
 
-    --pitanga:#c62828;
-    --pitanga-light:#f4511e;
-    --pitanga-soft:#ff7043;
+    --pitanga:#C62828;
+    --pitanga-light:#E53935;
+    --pitanga-orange:#F4511E;
 
-    --green:#2e7d32;
+    --green:#2E7D32;
 
-    --white:#ffffff;
+    --white:#FFFFFF;
 
-    --dark:#1f2937;
+    --dark:#1F2937;
 
-    --gray:#f5f5f5;
+    --gray:#F5F5F5;
+
+    --gray-dark:#555;
 
     --shadow:
     0 10px 30px rgba(0,0,0,.08);
@@ -36,7 +42,7 @@ body{
 
     font-family:'Poppins',sans-serif;
 
-    background:white;
+    background:var(--white);
 
     color:#333;
 
@@ -44,60 +50,88 @@ body{
 
     line-height:1.6;
 
+    overflow-x:hidden;
+
     transition:.3s;
 }
+
+/* ========= DARK MODE ========= */
 
 body.dark{
 
     background:#121212;
+
     color:#f5f5f5;
 }
 
-/* =========================
-   HEADER
-========================= */
+body.dark header,
+body.dark .producer-card,
+body.dark .about-box,
+body.dark .form-container{
+
+    background:#1d1d1d;
+}
+
+body.dark textarea,
+body.dark input{
+
+    background:#252525;
+
+    color:white;
+
+    border:1px solid #444;
+}
+
+/* ========= HEADER ========= */
 
 header{
 
     position:sticky;
+
     top:0;
 
-    z-index:999;
+    z-index:1000;
 
     background:white;
 
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
 
     padding:1rem 5%;
 
     box-shadow:var(--shadow);
-}
 
-body.dark header{
-
-    background:#1f1f1f;
+    transition:.3s;
 }
 
 .logo{
 
-    font-size:1.5rem;
+    font-size:1.6rem;
+
     font-weight:700;
+
     color:var(--pitanga);
 }
 
 nav{
 
     display:flex;
+
     gap:1.5rem;
 }
 
 nav a{
 
     text-decoration:none;
-    color:inherit;
+
+    color:#333;
+
     font-weight:500;
+
+    transition:.3s;
 }
 
 nav a:hover{
@@ -105,91 +139,154 @@ nav a:hover{
     color:var(--pitanga);
 }
 
-#loginBtn{
+.header-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:1rem;
+}
+
+#loginBtn,
+#cartBtn{
 
     border:none;
+
+    cursor:pointer;
+
+    border-radius:12px;
+
+    padding:.8rem 1rem;
+
+    color:white;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+#loginBtn{
 
     background:
     linear-gradient(
     135deg,
     var(--pitanga),
-    var(--pitanga-light));
-
-    color:white;
-
-    padding:.8rem 1.2rem;
-
-    border-radius:12px;
-
-    cursor:pointer;
+    var(--pitanga-orange)
+    );
 }
 
-/* =========================
-   HERO
-========================= */
+#cartBtn{
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--green),
+    #43a047
+    );
+}
+
+#loginBtn:hover,
+#cartBtn:hover{
+
+    transform:translateY(-2px);
+}
+
+/* ========= HERO ========= */
 
 .hero{
 
-    min-height:80vh;
+    min-height:90vh;
 
     display:flex;
-    align-items:center;
+
     justify-content:center;
+
+    align-items:center;
 
     text-align:center;
 
-    padding:2rem;
+    padding:3rem;
 
     background:
     linear-gradient(
     135deg,
     #c62828,
     #e53935,
-    #f4511e);
+    #f4511e
+    );
+
+    color:white;
 }
 
 .hero-content{
 
     max-width:900px;
-    color:white;
 }
 
 .hero h1{
 
     font-size:
-    clamp(2rem,5vw,4rem);
+    clamp(3rem,7vw,5rem);
 
     margin-bottom:1rem;
+
+    font-weight:700;
+}
+
+.hero h2{
+
+    font-size:
+    clamp(1.2rem,3vw,2rem);
+
+    font-weight:500;
+
+    margin-bottom:1.5rem;
 }
 
 .hero p{
 
-    font-size:
-    clamp(1rem,2vw,1.2rem);
+    max-width:700px;
+
+    margin:auto;
 
     margin-bottom:2rem;
+
+    font-size:1.1rem;
+}
+
+.hero-buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:1rem;
 }
 
 .hero-btn{
 
-    border:none;
-
-    padding:1rem 2rem;
+    text-decoration:none;
 
     background:white;
 
     color:var(--pitanga);
 
+    padding:1rem 2rem;
+
     border-radius:14px;
 
     font-weight:600;
 
-    cursor:pointer;
+    transition:.3s;
 }
 
-/* =========================
-   SEÇÕES
-========================= */
+.hero-btn:hover{
+
+    transform:translateY(-4px);
+}
+
+/* ========= SEÇÕES ========= */
 
 section{
 
@@ -206,88 +303,233 @@ section{
 .section-title h2{
 
     font-size:
-    clamp(1.8rem,4vw,3rem);
+    clamp(2rem,4vw,3rem);
+
+    color:var(--pitanga);
 
     margin-bottom:1rem;
 }
 
-/* =========================
-   PRÓXIMA FEIRA
-========================= */
+.section-title p{
+
+    color:var(--gray-dark);
+}
+
+/* ========= PRÓXIMA FEIRA ========= */
 
 .next-fair{
 
-    background:#fff4f1;
-
     text-align:center;
+
+    background:#fff4f1;
 }
 
 .next-fair h2{
 
     color:var(--pitanga);
+
+    margin-bottom:1rem;
 }
 
 .next-fair p{
 
-    font-size:1.3rem;
-    font-weight:600;
+    font-size:1.4rem;
+
+    font-weight:700;
+
+    margin-bottom:.5rem;
 }
 
-/* =========================
-   PRODUTOS
-========================= */
+.next-fair span{
+
+    color:#555;
+}
+
+/* ========= ACESSIBILIDADE ========= */
+
+.accessibility-box{
+
+    position:fixed;
+
+    left:20px;
+
+    bottom:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:.5rem;
+
+    background:white;
+
+    padding:1rem;
+
+    border-radius:15px;
+
+    box-shadow:var(--shadow);
+
+    z-index:999;
+}
+
+.accessibility-box h4{
+
+    text-align:center;
+
+    margin-bottom:.5rem;
+}
+
+.accessibility-box button{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:.6rem;
+
+    border-radius:8px;
+
+    background:#f0f0f0;
+
+    transition:.3s;
+}
+
+.accessibility-box button:hover{
+
+    background:#ddd;
+}
+
+/* ===================================
+   FEIRA DE PITANGA V2
+   STYLE.CSS - PARTE 2
+=================================== */
+
+/* ========= PRODUTOS ========= */
 
 .products-grid{
 
     display:grid;
 
     grid-template-columns:
-    repeat(auto-fit,minmax(260px,1fr));
+    repeat(auto-fit,minmax(280px,1fr));
 
-    gap:1.5rem;
+    gap:2rem;
 }
 
 .product-card{
 
     background:white;
 
-    border-radius:var(--radius);
+    border-radius:20px;
 
     overflow:hidden;
 
     box-shadow:var(--shadow);
 
-    transition:var(--transition);
+    transition:.3s;
+
+    position:relative;
 }
 
 .product-card:hover{
 
-    transform:translateY(-6px);
+    transform:
+    translateY(-10px);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.12);
 }
+
+body.dark .product-card{
+
+    background:#1d1d1d;
+}
+
+/* ========= IMAGEM PRODUTO ========= */
 
 .product-image{
 
     width:100%;
-    height:180px;
 
-    background:
-    linear-gradient(
-    135deg,
-    #ff7043,
-    #c62828);
+    height:220px;
+
+    object-fit:cover;
+
+    display:block;
 }
 
 .product-content{
 
-    padding:1rem;
+    padding:1.2rem;
 }
 
 .product-content h3{
 
-    margin-bottom:.5rem;
+    color:var(--pitanga);
+
+    margin-bottom:.6rem;
+
+    font-size:1.2rem;
 }
 
-.product-content button{
+.product-content p{
+
+    margin-bottom:.4rem;
+
+    font-size:.95rem;
+}
+
+/* ========= PREÇO ========= */
+
+.product-price{
+
+    font-size:1.3rem;
+
+    font-weight:700;
+
+    color:var(--green);
+
+    margin-top:.8rem;
+}
+
+/* ========= ESTOQUE ========= */
+
+.stock{
+
+    display:inline-block;
+
+    margin-top:.8rem;
+
+    padding:.3rem .8rem;
+
+    border-radius:50px;
+
+    background:#e8f5e9;
+
+    color:var(--green);
+
+    font-weight:600;
+
+    font-size:.85rem;
+}
+
+.stock.low{
+
+    background:#fff3e0;
+
+    color:#ef6c00;
+}
+
+.stock.empty{
+
+    background:#ffebee;
+
+    color:#c62828;
+}
+
+/* ========= BOTÃO RESERVAR ========= */
+
+.reserve-btn{
 
     width:100%;
 
@@ -295,24 +537,39 @@ section{
 
     border:none;
 
-    background:
-    linear-gradient(
-    135deg,
-    #c62828,
-    #f4511e);
+    padding:1rem;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-weight:600;
 
     color:white;
 
-    padding:.8rem;
+    background:
+    linear-gradient(
+    135deg,
+    var(--pitanga),
+    var(--pitanga-orange)
+    );
 
-    border-radius:10px;
-
-    cursor:pointer;
+    transition:.3s;
 }
 
-/* =========================
-   PRODUTORES
-========================= */
+.reserve-btn:hover{
+
+    transform:scale(1.02);
+}
+
+.reserve-btn:disabled{
+
+    cursor:not-allowed;
+
+    opacity:.6;
+}
+
+/* ========= PRODUTORES ========= */
 
 .producer-grid{
 
@@ -330,41 +587,34 @@ section{
 
     padding:2rem;
 
-    border-radius:var(--radius);
-
-    box-shadow:var(--shadow);
+    border-radius:20px;
 
     text-align:center;
-}
-
-/* =========================
-   IA
-========================= */
-
-.info-cards{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(auto-fit,minmax(250px,1fr));
-
-    gap:1.5rem;
-}
-
-.info-card{
-
-    background:white;
-
-    padding:2rem;
-
-    border-radius:var(--radius);
 
     box-shadow:var(--shadow);
+
+    transition:.3s;
 }
 
-/* =========================
-   SOBRE
-========================= */
+.producer-card:hover{
+
+    transform:
+    translateY(-6px);
+}
+
+.producer-card h3{
+
+    color:var(--pitanga);
+
+    margin-bottom:.8rem;
+}
+
+.producer-card p{
+
+    color:#666;
+}
+
+/* ========= SOBRE ========= */
 
 .about-box{
 
@@ -376,14 +626,17 @@ section{
 
     padding:2rem;
 
-    border-radius:var(--radius);
+    border-radius:20px;
 
     box-shadow:var(--shadow);
 }
 
-/* =========================
-   FORMULÁRIO
-========================= */
+.about-box p{
+
+    margin-bottom:1rem;
+}
+
+/* ========= FORMULÁRIO ========= */
 
 .form-container{
 
@@ -395,14 +648,33 @@ section{
 
     padding:2rem;
 
-    border-radius:var(--radius);
+    border-radius:20px;
 
     box-shadow:var(--shadow);
 }
 
+.form-container h2{
+
+    color:var(--pitanga);
+
+    margin-bottom:1rem;
+
+    text-align:center;
+}
+
+.form-container p{
+
+    text-align:center;
+
+    margin-bottom:2rem;
+}
+
 form{
 
-    display:grid;
+    display:flex;
+
+    flex-direction:column;
+
     gap:1rem;
 }
 
@@ -412,51 +684,88 @@ input{
 
     border:1px solid #ddd;
 
-    border-radius:10px;
+    border-radius:12px;
+
+    font-family:inherit;
+}
+
+input:focus{
+
+    outline:none;
+
+    border-color:var(--pitanga);
 }
 
 form button{
 
     border:none;
 
-    background:
-    linear-gradient(
-    135deg,
-    #c62828,
-    #f4511e);
-
-    color:white;
+    cursor:pointer;
 
     padding:1rem;
 
-    border-radius:10px;
+    border-radius:12px;
 
-    cursor:pointer;
+    color:white;
+
+    font-weight:600;
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--pitanga),
+    var(--pitanga-orange)
+    );
+
+    transition:.3s;
 }
 
-/* =========================
-   COMENTÁRIOS
-========================= */
+form button:hover{
+
+    transform:
+    translateY(-2px);
+}
+
+/* ========= COMENTÁRIOS ========= */
 
 .comments-section{
 
     max-width:900px;
+
     margin:auto;
+}
+
+.comments-section h2{
+
+    color:var(--pitanga);
+
+    margin-bottom:1rem;
+
+    text-align:center;
 }
 
 textarea{
 
     width:100%;
 
-    min-height:150px;
+    min-height:160px;
+
+    resize:none;
 
     padding:1rem;
 
-    border-radius:12px;
-
     border:1px solid #ddd;
 
-    resize:none;
+    border-radius:16px;
+
+    font-family:inherit;
+}
+
+textarea:focus{
+
+    outline:none;
+
+    border-color:var(--pitanga);
 }
 
 #commentBtn{
@@ -465,122 +774,227 @@ textarea{
 
     border:none;
 
-    background:#c62828;
-
-    color:white;
+    cursor:pointer;
 
     padding:1rem 2rem;
 
-    border-radius:10px;
-}
-
-/* =========================
-   CHAT IA
-========================= */
-
-#chatToggle{
-
-    position:fixed;
-
-    right:25px;
-    bottom:25px;
-
-    width:70px;
-    height:70px;
-
-    border:none;
-
-    border-radius:50%;
-
-    background:
-    linear-gradient(
-    135deg,
-    #c62828,
-    #f4511e);
-
-    color:white;
-
-    font-size:1.6rem;
-
-    cursor:pointer;
-
-    z-index:1000;
-}
-
-#chatWindow{
-
-    position:fixed;
-
-    right:25px;
-    bottom:110px;
-
-    width:360px;
-    height:500px;
-
-    background:white;
-
-    border-radius:20px;
-
-    box-shadow:var(--shadow);
-
-    display:none;
-
-    flex-direction:column;
-
-    overflow:hidden;
-}
-
-.chat-header{
-
-    padding:1rem;
-
-    background:
-    linear-gradient(
-    135deg,
-    #c62828,
-    #f4511e);
+    border-radius:12px;
 
     color:white;
 
     font-weight:600;
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--pitanga),
+    var(--pitanga-orange)
+    );
+
+    transition:.3s;
 }
 
-#chatMessages{
+#commentBtn:hover{
 
-    flex:1;
+    transform:
+    translateY(-2px);
+}
+
+/* ========= LISTA DE COMENTÁRIOS ========= */
+
+#commentsList{
+
+    margin-top:2rem;
+}
+
+.comment-card{
+
+    background:white;
 
     padding:1rem;
 
-    overflow-y:auto;
+    border-radius:15px;
+
+    box-shadow:var(--shadow);
+
+    margin-bottom:1rem;
 }
 
-.chat-input{
+body.dark .comment-card{
+
+    background:#1d1d1d;
+}
+
+.comment-card strong{
+
+    display:block;
+
+    color:var(--pitanga);
+
+    margin-bottom:.5rem;
+}
+
+.comment-card small{
+
+    display:block;
+
+    margin-top:.5rem;
+
+    color:#888;
+}
+
+/* ===================================
+   FEIRA DE PITANGA V2
+   STYLE.CSS - PARTE 3
+=================================== */
+
+/* ========= CARRINHO LATERAL ========= */
+
+.cart-sidebar{
+
+    position:fixed;
+
+    top:0;
+    right:-420px;
+
+    width:400px;
+    max-width:95vw;
+
+    height:100vh;
+
+    background:white;
+
+    box-shadow:
+    -10px 0 30px rgba(0,0,0,.15);
+
+    z-index:2000;
 
     display:flex;
 
-    border-top:1px solid #ddd;
+    flex-direction:column;
+
+    transition:.4s ease;
 }
 
-.chat-input input{
+.cart-sidebar.active{
 
-    flex:1;
-    border:none;
+    right:0;
 }
 
-.chat-input button{
+body.dark .cart-sidebar{
 
-    border:none;
+    background:#1d1d1d;
+}
 
-    padding:1rem;
+.cart-header{
 
-    background:#c62828;
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:1.5rem;
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--pitanga),
+    var(--pitanga-orange)
+    );
 
     color:white;
 }
 
-/* =========================
-   LOGIN
-========================= */
+.cart-header h2{
+
+    font-size:1.2rem;
+}
+
+#closeCart{
+
+    background:none;
+
+    border:none;
+
+    color:white;
+
+    font-size:1.4rem;
+
+    cursor:pointer;
+}
+
+#cartItems{
+
+    flex:1;
+
+    overflow-y:auto;
+
+    padding:1rem;
+}
+
+.cart-item{
+
+    padding:1rem;
+
+    border-radius:12px;
+
+    background:#f5f5f5;
+
+    margin-bottom:1rem;
+}
+
+body.dark .cart-item{
+
+    background:#2a2a2a;
+}
+
+.cart-item h4{
+
+    color:var(--pitanga);
+
+    margin-bottom:.3rem;
+}
+
+.cart-footer{
+
+    padding:1rem;
+
+    border-top:1px solid #ddd;
+}
+
+.cart-footer p{
+
+    margin-bottom:1rem;
+
+    font-weight:600;
+}
+
+#finishReservation{
+
+    width:100%;
+
+    border:none;
+
+    padding:1rem;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-weight:600;
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--green),
+    #43a047
+    );
+}
+
+/* ========= MODAL LOGIN ========= */
 
 .modal{
 
@@ -589,67 +1003,110 @@ textarea{
     inset:0;
 
     background:
-    rgba(0,0,0,.5);
+    rgba(0,0,0,.55);
 
     display:none;
 
     justify-content:center;
+
     align-items:center;
+
+    z-index:3000;
+}
+
+.modal.active{
+
+    display:flex;
 }
 
 .modal-content{
 
-    background:white;
+    width:90%;
+    max-width:400px;
 
-    padding:2rem;
+    background:white;
 
     border-radius:20px;
 
-    width:90%;
-    max-width:400px;
+    padding:2rem;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,.2);
 }
 
-/* =========================
-   ACESSIBILIDADE
-========================= */
+body.dark .modal-content{
 
-.accessibility-box{
-
-    position:fixed;
-
-    left:20px;
-    bottom:20px;
-
-    display:flex;
-    flex-direction:column;
-
-    gap:.5rem;
-
-    padding:1rem;
-
-    background:white;
-
-    border-radius:15px;
-
-    box-shadow:var(--shadow);
-
-    z-index:999;
+    background:#1d1d1d;
 }
 
-.accessibility-box button{
+.modal-content h2{
+
+    text-align:center;
+
+    margin-bottom:1rem;
+
+    color:var(--pitanga);
+}
+
+.modal-content input{
+
+    width:100%;
+
+    margin-bottom:1rem;
+}
+
+#saveUser{
+
+    width:100%;
 
     border:none;
 
-    padding:.6rem;
-
-    border-radius:8px;
-
     cursor:pointer;
+
+    padding:1rem;
+
+    border-radius:12px;
+
+    color:white;
+
+    font-weight:600;
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--pitanga),
+    var(--pitanga-orange)
+    );
 }
 
-/* =========================
-   FOOTER
-========================= */
+/* ========= BADGE CARRINHO ========= */
+
+#cartCount{
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-width:24px;
+
+    height:24px;
+
+    border-radius:50%;
+
+    background:white;
+
+    color:var(--green);
+
+    font-size:.8rem;
+
+    font-weight:700;
+
+    margin-left:.4rem;
+}
+
+/* ========= FOOTER ========= */
 
 footer{
 
@@ -659,37 +1116,223 @@ footer{
 
     text-align:center;
 
-    padding:2rem;
+    padding:3rem 1rem;
 }
 
-/* =========================
-   RESPONSIVO
-========================= */
+footer p{
+
+    margin-bottom:.5rem;
+}
+
+/* ========= ANIMAÇÕES ========= */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+    }
+
+    to{
+
+        opacity:1;
+    }
+
+}
+
+@keyframes slideUp{
+
+    from{
+
+        opacity:0;
+
+        transform:
+        translateY(40px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+        translateY(0);
+    }
+
+}
+
+.hero-content{
+
+    animation:
+    fadeIn 1s ease;
+}
+
+.product-card,
+.producer-card,
+.comment-card{
+
+    animation:
+    slideUp .6s ease;
+}
+
+/* ========= SCROLLBAR ========= */
+
+::-webkit-scrollbar{
+
+    width:10px;
+}
+
+::-webkit-scrollbar-track{
+
+    background:#f2f2f2;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:
+    linear-gradient(
+    180deg,
+    var(--pitanga),
+    var(--pitanga-orange)
+    );
+
+    border-radius:50px;
+}
+
+/* ========= RESPONSIVIDADE ========= */
+
+@media(max-width:1024px){
+
+    nav{
+
+        gap:1rem;
+    }
+
+    .products-grid{
+
+        grid-template-columns:
+        repeat(auto-fit,minmax(240px,1fr));
+    }
+
+}
 
 @media(max-width:768px){
 
     header{
 
         flex-direction:column;
+
         gap:1rem;
+
+        padding:1rem;
     }
 
     nav{
 
         flex-wrap:wrap;
+
         justify-content:center;
     }
 
-    #chatWindow{
+    .header-actions{
 
-        width:95%;
-        right:2.5%;
+        width:100%;
+
+        justify-content:center;
+    }
+
+    .hero{
+
+        min-height:75vh;
+    }
+
+    .hero h1{
+
+        font-size:2.5rem;
+    }
+
+    .hero h2{
+
+        font-size:1.2rem;
+    }
+
+    .products-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .producer-grid{
+
+        grid-template-columns:1fr;
     }
 
     .accessibility-box{
 
         left:10px;
-        bottom:100px;
+
+        bottom:10px;
+
+        padding:.8rem;
     }
 
+    .cart-sidebar{
+
+        width:100%;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .hero{
+
+        padding:2rem 1rem;
+    }
+
+    .hero-btn{
+
+        width:100%;
+    }
+
+    .modal-content{
+
+        padding:1.5rem;
+    }
+
+    textarea{
+
+        min-height:120px;
+    }
+
+}
+
+/* ========= UTILITÁRIOS ========= */
+
+.hidden{
+
+    display:none !important;
+}
+
+.center{
+
+    text-align:center;
+}
+
+.mt-1{
+
+    margin-top:1rem;
+}
+
+.mt-2{
+
+    margin-top:2rem;
+}
+
+.mb-1{
+
+    margin-bottom:1rem;
+}
+
+.mb-2{
+
+    margin-bottom:2rem;
 }

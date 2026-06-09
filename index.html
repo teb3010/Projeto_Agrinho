@@ -2,34 +2,56 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
     <title>Feira de Pitanga</title>
 
-    <link rel="stylesheet" href="style.css">
+    <meta name="description"
+        content="Plataforma digital da Feira de Pitanga para divulgação e reserva de produtos da agricultura familiar.">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet"
+        href="style.css">
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+
 </head>
 
 <body>
 
-    <!-- ACESSIBILIDADE -->
+    <!-- ==========================
+         ACESSIBILIDADE
+    =========================== -->
 
     <div class="accessibility-box">
 
         <h4>Acessibilidade</h4>
 
-        <button id="increaseFont">A+</button>
-        <button id="decreaseFont">A-</button>
+        <button id="increaseFont">
+            A+
+        </button>
+
+        <button id="decreaseFont">
+            A-
+        </button>
 
         <button id="darkModeBtn">
             🌙
         </button>
 
         <button id="readPage">
-            🔊 Ler
+            🔊
         </button>
 
         <button id="stopReading">
@@ -38,7 +60,9 @@
 
     </div>
 
-    <!-- HEADER -->
+    <!-- ==========================
+         HEADER
+    =========================== -->
 
     <header>
 
@@ -50,178 +74,259 @@
 
         <nav>
 
-            <a href="#inicio">Início</a>
-            <a href="#produtos">Produtos</a>
-            <a href="#produtores">Produtores</a>
-            <a href="#ia">AgroIA</a>
-            <a href="#sobre">Sobre</a>
+            <a href="#inicio">
+                Início
+            </a>
+
+            <a href="#produtos">
+                Produtos
+            </a>
+
+            <a href="#produtores">
+                Produtores
+            </a>
+
+            <a href="#sobre">
+                Sobre
+            </a>
+
+            <a href="#comentarios">
+                Comentários
+            </a>
 
         </nav>
 
-        <button id="loginBtn">
-            Entrar
-        </button>
+        <div class="header-actions">
+
+            <button id="cartBtn">
+
+                🛒
+                <span id="cartCount">
+                    0
+                </span>
+
+            </button>
+
+            <button id="loginBtn">
+
+                Entrar
+
+            </button>
+
+        </div>
 
     </header>
 
-    <!-- HERO -->
+    <!-- ==========================
+         HERO
+    =========================== -->
 
-    <section id="inicio" class="hero">
+    <section id="inicio"
+        class="hero">
 
         <div class="hero-content">
 
             <h1>
-                Conectando a Agricultura Familiar de Pitanga à Tecnologia
+
+                🍒 Feira de Pitanga
+
             </h1>
+
+            <h2>
+
+                Agricultura familiar,
+                produtos frescos
+                e produtores locais.
+
+            </h2>
 
             <p>
 
-                Conheça os produtores locais, reserve produtos frescos e descubra
-                como a tecnologia pode fortalecer o campo.
+                Conheça os produtos disponíveis
+                para a próxima feira e faça sua
+                reserva online para retirada
+                na Praça da Igreja Sant'Ana.
 
             </p>
 
-            <button class="hero-btn">
-                Ver Produtos
-            </button>
+            <div class="hero-buttons">
+
+                <a href="#produtos"
+                    class="hero-btn">
+
+                    Ver Produtos
+
+                </a>
+
+            </div>
 
         </div>
 
     </section>
 
-    <!-- DATA DA FEIRA -->
+    <!-- ==========================
+         PRÓXIMA FEIRA
+    =========================== -->
 
     <section class="next-fair">
 
-        <h2>📅 Próxima Feira</h2>
+        <h2>
 
-        <p id="fairDate"></p>
+            📅 Próxima Feira
+
+        </h2>
+
+        <p id="fairDate">
+
+        </p>
 
         <span>
-            📍 Praça da Igreja Sant'Ana - Pitanga/PR
+
+            📍 Praça da Igreja Sant'Ana
+
         </span>
 
     </section>
 
-    <!-- PRODUTOS -->
+    <!-- ==========================
+         PRODUTOS
+    =========================== -->
 
     <section id="produtos">
 
         <div class="section-title">
 
-            <h2>Produtos Disponíveis</h2>
+            <h2>
+
+                Produtos Disponíveis
+
+            </h2>
 
             <p>
-                Reserve antecipadamente e retire no dia da feira.
+
+                Reserve antecipadamente
+                seus produtos favoritos.
+
             </p>
 
         </div>
 
-        <div id="productsContainer" class="products-grid">
+        <div id="productsContainer"
+            class="products-grid">
+
+            <!-- JS -->
 
         </div>
 
     </section>
 
-    <!-- PRODUTORES -->
+    <!-- ==========================
+         PRODUTORES
+    =========================== -->
 
     <section id="produtores">
 
         <div class="section-title">
 
-            <h2>Produtores da Feira</h2>
+            <h2>
+
+                Produtores da Feira
+
+            </h2>
 
         </div>
 
         <div class="producer-grid">
 
             <div class="producer-card">
-                <h3>Sítio Bela Vista</h3>
-                <p>Hortaliças e Legumes</p>
+
+                <h3>
+                    Sítio Bela Vista
+                </h3>
+
+                <p>
+                    Hortaliças e Legumes
+                </p>
+
             </div>
 
             <div class="producer-card">
-                <h3>Chácara Santa Clara</h3>
-                <p>Frutas</p>
+
+                <h3>
+                    Chácara Santa Clara
+                </h3>
+
+                <p>
+                    Frutas
+                </p>
+
             </div>
 
             <div class="producer-card">
-                <h3>Fazenda Recanto Verde</h3>
-                <p>Laticínios</p>
+
+                <h3>
+                    Fazenda Recanto Verde
+                </h3>
+
+                <p>
+                    Laticínios
+                </p>
+
             </div>
 
             <div class="producer-card">
-                <h3>Agropecuária Dois Irmãos</h3>
-                <p>Ovos Caipiras</p>
+
+                <h3>
+                    Agropecuária Dois Irmãos
+                </h3>
+
+                <p>
+                    Ovos Caipiras
+                </p>
+
             </div>
 
             <div class="producer-card">
-                <h3>Pães da Dona Helena</h3>
-                <p>Panificados e Artesanais</p>
+
+                <h3>
+                    Pães da Dona Helena
+                </h3>
+
+                <p>
+                    Artesanais
+                </p>
+
             </div>
 
             <div class="producer-card">
-                <h3>Sabor da Terra</h3>
-                <p>Geleias e Conservas</p>
+
+                <h3>
+                    Sabor da Terra
+                </h3>
+
+                <p>
+                    Conservas e Geleias
+                </p>
+
             </div>
 
         </div>
 
     </section>
 
-    <!-- IA -->
-
-    <section id="ia" class="ia-section">
-
-        <div class="section-title">
-
-            <h2>Inteligência Artificial no Campo</h2>
-
-        </div>
-
-        <div class="info-cards">
-
-            <div class="info-card">
-
-                <h3>🌱 Sustentabilidade</h3>
-
-                <p>
-                    Uso inteligente de recursos naturais.
-                </p>
-
-            </div>
-
-            <div class="info-card">
-
-                <h3>🚜 Agricultura Inteligente</h3>
-
-                <p>
-                    Monitoramento de culturas e redução de desperdícios.
-                </p>
-
-            </div>
-
-            <div class="info-card">
-
-                <h3>📈 Produtividade</h3>
-
-                <p>
-                    Maior eficiência para pequenos produtores.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- SOBRE -->
+    <!-- ==========================
+         SOBRE
+    =========================== -->
 
     <section id="sobre">
 
         <div class="section-title">
 
-            <h2>Sobre Pitanga</h2>
+            <h2>
+
+                Sobre a Feira
+
+            </h2>
 
         </div>
 
@@ -229,10 +334,22 @@
 
             <p>
 
-                Pitanga está localizada na região Centro-Sul do Paraná e possui
-                forte tradição agrícola. A agricultura familiar desempenha papel
-                fundamental na economia local, contribuindo para a geração de renda,
-                produção de alimentos e fortalecimento das comunidades rurais.
+                A Feira de Pitanga foi criada
+                para valorizar os produtores
+                da agricultura familiar,
+                aproximando consumidores
+                e produtores através
+                de uma plataforma simples
+                e acessível.
+
+            </p>
+
+            <p>
+
+                Os produtos reservados
+                podem ser retirados
+                presencialmente
+                na Praça da Igreja Sant'Ana.
 
             </p>
 
@@ -240,7 +357,9 @@
 
     </section>
 
-    <!-- FORMULÁRIO -->
+    <!-- ==========================
+         SEMINÁRIO
+    =========================== -->
 
     <section id="seminario">
 
@@ -248,31 +367,36 @@
 
             <h2>
 
-                Venha conhecer melhor como a IA pode ser uma aliada do Campo
+                Cadastro para Informações
 
             </h2>
 
             <p>
 
-                Inscreva-se em nosso seminário online.
+                Receba novidades sobre
+                a próxima feira.
 
             </p>
 
             <form id="seminarioForm">
 
-                <input type="text" placeholder="Nome">
+                <input
+                    type="text"
+                    placeholder="Nome"
+                    required>
 
-                <input type="email" placeholder="E-mail">
+                <input
+                    type="email"
+                    placeholder="E-mail"
+                    required>
 
-                <input type="text" placeholder="Cidade">
-
-                <input type="text" placeholder="Estado">
-
-                <input type="text" placeholder="País">
+                <input
+                    type="text"
+                    placeholder="Cidade">
 
                 <button type="submit">
 
-                    Inscrever-se
+                    Cadastrar
 
                 </button>
 
@@ -282,17 +406,28 @@
 
     </section>
 
-    <!-- COMENTÁRIOS -->
+    <!-- ==========================
+         COMENTÁRIOS
+    =========================== -->
 
-    <section class="comments-section">
+    <section id="comentarios"
+        class="comments-section">
 
-        <h2>Comentários</h2>
+        <h2>
 
-        <textarea id="commentInput"
-            placeholder="Deixe sua opinião sobre a Feira de Pitanga"></textarea>
+            Comentários da Comunidade
+
+        </h2>
+
+        <textarea
+            id="commentInput"
+            placeholder="Compartilhe sua opinião sobre a feira">
+        </textarea>
 
         <button id="commentBtn">
-            Enviar
+
+            Publicar Comentário
+
         </button>
 
         <div id="commentsList">
@@ -301,35 +436,47 @@
 
     </section>
 
-    <!-- CHAT IA -->
+    <!-- ==========================
+         CARRINHO
+    =========================== -->
 
-    <button id="chatToggle">
+    <div id="cartSidebar"
+        class="cart-sidebar">
 
-        🤖
+        <div class="cart-header">
 
-    </button>
+            <h2>
 
-    <div id="chatWindow">
+                🛒 Minhas Reservas
 
-        <div class="chat-header">
+            </h2>
 
-            AgroIA Pitanga
+            <button id="closeCart">
+
+                ✕
+
+            </button>
 
         </div>
 
-        <div id="chatMessages">
+        <div id="cartItems">
 
         </div>
 
-        <div class="chat-input">
+        <div class="cart-footer">
 
-            <input type="text"
-                id="userMessage"
-                placeholder="Digite sua pergunta">
+            <p>
 
-            <button id="sendMessage">
+                Total de itens:
+                <span id="cartTotal">
+                    0
+                </span>
 
-                Enviar
+            </p>
+
+            <button id="finishReservation">
+
+                Finalizar Reserva
 
             </button>
 
@@ -337,18 +484,25 @@
 
     </div>
 
-    <!-- LOGIN -->
+    <!-- ==========================
+         LOGIN
+    =========================== -->
 
-    <div id="loginModal" class="modal">
+    <div id="loginModal"
+        class="modal">
 
         <div class="modal-content">
 
-            <h2>Entrar</h2>
+            <h2>
+
+                Entrar
+
+            </h2>
 
             <input
                 type="text"
                 id="username"
-                placeholder="Seu nome">
+                placeholder="Digite seu nome">
 
             <button id="saveUser">
 
@@ -360,20 +514,21 @@
 
     </div>
 
-    <!-- RODAPÉ -->
+    <!-- ==========================
+         FOOTER
+    =========================== -->
 
     <footer>
 
         <p>
 
-            AgroFuturo 2026 ° Conectando a inteligência tecnologia à terra de forma sustentável
+            Feira de Pitanga © 2026
 
         </p>
 
         <p>
 
-            Referências:
-            Bem Agro e Agrolink.
+            Agricultura Familiar • Pitanga • Paraná
 
         </p>
 
