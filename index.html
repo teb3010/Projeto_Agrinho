@@ -508,8 +508,13 @@
 
             <input
                 type="text"
-                id="username"
-                placeholder="Digite seu nome">
+                id="firstName"
+                placeholder="Nome">
+
+            <input
+                type="text"
+                id="lastName"
+                placeholder="Sobrenome">
 
             <input
                 type="password"
@@ -521,6 +526,118 @@
                 Entrar
 
             </button>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================
+         MENU DO USUARIO
+    =========================== -->
+
+    <div id="userMenuModal"
+        class="modal">
+
+        <div class="modal-content user-menu-modal">
+
+            <div class="user-menu-header">
+
+                <div>
+
+                    <h2>
+
+                        Minha conta
+
+                    </h2>
+
+                    <p id="userMenuName">
+
+                    </p>
+
+                </div>
+
+                <button id="closeUserMenu"
+                    class="modal-close">
+
+                    Fechar
+
+                </button>
+
+            </div>
+
+            <div class="user-menu-grid">
+
+                <section class="user-menu-section">
+
+                    <h3>
+
+                        Alterar senha
+
+                    </h3>
+
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        placeholder="Senha atual">
+
+                    <input
+                        type="password"
+                        id="newPassword"
+                        placeholder="Nova senha">
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirmar nova senha">
+
+                    <button id="changePassword">
+
+                        Salvar nova senha
+
+                    </button>
+
+                </section>
+
+                <section class="user-menu-section">
+
+                    <h3>
+
+                        Minhas reservas
+
+                    </h3>
+
+                    <div id="userReservationsList">
+
+                    </div>
+
+                </section>
+
+                <section class="user-menu-section">
+
+                    <h3>
+
+                        Meus comentários
+
+                    </h3>
+
+                    <div id="userCommentsList">
+
+                    </div>
+
+                </section>
+
+            </div>
+
+            <div class="user-menu-actions">
+
+                <button id="logoutUser"
+                    class="logout-btn">
+
+                    Sair da conta
+
+                </button>
+
+            </div>
 
         </div>
 

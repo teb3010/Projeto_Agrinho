@@ -1194,6 +1194,283 @@ body.dark .modal-content{
     );
 }
 
+.modal-close{
+
+    border:none;
+
+    cursor:pointer;
+
+    border-radius:10px;
+
+    padding:.75rem 1rem;
+
+    color:white;
+
+    font-weight:600;
+
+    background:#333;
+}
+
+.user-menu-modal{
+
+    max-width:960px;
+
+    max-height:90vh;
+
+    overflow-y:auto;
+}
+
+.user-menu-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:1rem;
+
+    margin-bottom:1.5rem;
+}
+
+.user-menu-header h2{
+
+    text-align:left;
+
+    margin-bottom:.25rem;
+}
+
+.user-menu-header p{
+
+    color:#666;
+
+    font-weight:600;
+}
+
+body.dark .user-menu-header p{
+
+    color:#ddd;
+}
+
+.user-menu-grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(260px,1fr));
+
+    gap:1rem;
+}
+
+.user-menu-section{
+
+    padding:1rem;
+
+    border-radius:16px;
+
+    background:#f7f7f7;
+}
+
+body.dark .user-menu-section{
+
+    background:#252525;
+}
+
+.user-menu-section h3{
+
+    color:var(--pitanga);
+
+    margin-bottom:1rem;
+}
+
+.user-menu-section input{
+
+    width:100%;
+
+    margin-bottom:.8rem;
+}
+
+.user-menu-section button,
+.user-menu-actions button,
+.reservation-actions button,
+.comment-actions button{
+
+    border:none;
+
+    cursor:pointer;
+
+    border-radius:10px;
+
+    padding:.75rem .9rem;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.user-menu-section button{
+
+    width:100%;
+
+    color:white;
+
+    background:
+    linear-gradient(
+    135deg,
+    var(--pitanga),
+    var(--pitanga-orange)
+    );
+}
+
+.user-menu-section button:hover,
+.user-menu-actions button:hover,
+.reservation-actions button:hover,
+.comment-actions button:hover,
+.modal-close:hover{
+
+    transform:translateY(-2px);
+}
+
+.user-reservation-card,
+.user-comment-card{
+
+    padding:1rem;
+
+    border-radius:14px;
+
+    background:white;
+
+    box-shadow:var(--shadow);
+
+    margin-bottom:1rem;
+}
+
+body.dark .user-reservation-card,
+body.dark .user-comment-card{
+
+    background:#1d1d1d;
+}
+
+.user-reservation-card h4,
+.user-comment-card strong{
+
+    color:var(--pitanga);
+
+    display:block;
+
+    margin-bottom:.5rem;
+}
+
+.reservation-summary,
+.comment-date{
+
+    color:#666;
+
+    font-size:.9rem;
+
+    margin-bottom:.75rem;
+}
+
+body.dark .reservation-summary,
+body.dark .comment-date{
+
+    color:#ddd;
+}
+
+.reservation-product{
+
+    border-top:1px solid #eee;
+
+    padding-top:.75rem;
+
+    margin-top:.75rem;
+}
+
+body.dark .reservation-product{
+
+    border-top-color:#333;
+}
+
+.reservation-product-name{
+
+    font-weight:700;
+}
+
+.reservation-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:.5rem;
+
+    margin-top:.6rem;
+}
+
+.reservation-actions span{
+
+    font-weight:700;
+
+    min-width:28px;
+
+    text-align:center;
+}
+
+.reservation-actions button{
+
+    background:#f0f0f0;
+
+    color:#333;
+}
+
+body.dark .reservation-actions button{
+
+    background:#333;
+
+    color:#fff;
+}
+
+.danger-btn,
+.logout-btn,
+.comment-actions button{
+
+    color:#c62828;
+
+    background:#ffebee;
+}
+
+body.dark .danger-btn,
+body.dark .logout-btn,
+body.dark .comment-actions button{
+
+    color:#ffb4b4;
+
+    background:#3a1d1d;
+}
+
+.user-menu-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-top:1rem;
+}
+
+.empty-user-list{
+
+    color:#666;
+
+    font-size:.95rem;
+}
+
+body.dark .empty-user-list{
+
+    color:#ddd;
+}
+
 /* ========= BADGE CARRINHO ========= */
 
 #cartCount{

@@ -350,6 +350,39 @@ function getCurrentUser(){
     return null;
 }
 
+function getCurrentUserKey(){
+    return localStorage.getItem("currentUser");
+}
+
+function saveCurrentUser(user){
+    const key = getCurrentUserKey();
+
+    if(!key){
+        return;
+    }
+
+    const users = getUsers();
+    users[key] = user;
+    saveUsers(users);
+}
+
+function getReservationTotal(reservation){
+    return (reservation.items || [])
+        .reduce((total, item) => total + (item.price * item.quantity), 0);
+}
+
+function updateReservationTotal(reservation){
+    reservation.total = getReservationTotal(reservation);
+}
+
+function getComments(){
+    return JSON.parse(localStorage.getItem("comments")) || [];
+}
+
+function saveComments(comments){
+    localStorage.setItem("comments", JSON.stringify(comments));
+}
+
 function cleanExpiredReservations(){
     const today = formatISODate(new Date());
     const users = getUsers();
@@ -825,16 +858,42 @@ Data da feira: ${fair.display}`
 const loginBtn = document.getElementById("loginBtn");
 const loginModal = document.getElementById("loginModal");
 const saveUser = document.getElementById("saveUser");
-const usernameInput = document.getElementById("username");
+const firstNameInput = document.getElementById("firstName");
+const lastNameInput = document.getElementById("lastName");
 const passwordInput = document.getElementById("password");
+const userMenuModal = document.getElementById("userMenuModal");
+const closeUserMenu = document.getElementById("closeUserMenu");
+const userMenuName = document.getElementById("userMenuName");
+const userReservationsList = document.getElementById("userReservationsList");
+const userCommentsList = document.getElementById("userCommentsList");
+const currentPasswordInput = document.getElementById("currentPassword");
+const newPasswordInput = document.getElementById("newPassword");
+const confirmPasswordInput = document.getElementById("confirmPassword");
+const changePasswordBtn = document.getElementById("changePassword");
+const logoutUserBtn = document.getElementById("logoutUser");
 
 function openLoginModal(){
     if(loginModal){
         loginModal.classList.add("active");
     }
 
-    if(usernameInput){
-        usernameInput.focus();
+    if(firstNameInput){
+        firstNameInput.focus();
+    }
+}
+
+function openUserMenuModal(){
+    if(!userMenuModal){
+        return;
+    }
+
+    renderUserMenu();
+    userMenuModal.classList.add("active");
+}
+
+function closeUserMenuModal(){
+    if(userMenuModal){
+        userMenuModal.classList.remove("active");
     }
 }
 
@@ -854,25 +913,290 @@ function loadUser(){
     renderProducts();
 }
 
+function renderUserMenu(){
+    const user = getCurrentUser();
+
+    if(!user){
+        closeUserMenuModal();
+        return;
+    }
+
+    if(userMenuName){
+        userMenuName.textContent = user.name;
+    }
+
+    renderUserReservations(user);
+    renderUserComments();
+}
+
+function renderUserReservations(user){
+    if(!userReservationsList){
+        return;
+    }
+
+    const reservations = user.reservations || [];
+
+    userReservationsList.innerHTML = "";
+
+    if(reservations.length === 0){
+        userReservationsList.innerHTML = `
+            <p class="empty-user-list">
+                Você ainda não possui reservas finalizadas.
+            </p>
+        `;
+        return;
+    }
+
+    reservations.forEach((reservation, reservationIndex) => {
+        updateReservationTotal(reservation);
+
+        const itemsHTML = (reservation.items || [])
+            .map((item, itemIndex) => `
+                <div class="reservation-product">
+                    <p class="reservation-product-name">
+                        ${escapeHTML(item.name)}
+                    </p>
+
+                    <p>
+                        ${formatCurrency(item.price)} / ${escapeHTML(item.unit)}
+                    </p>
+
+                    <div class="reservation-actions">
+                        <button onclick="decreaseReservationItem(${reservationIndex}, ${itemIndex})">
+                            -
+                        </button>
+
+                        <span>
+                            ${item.quantity}
+                        </span>
+
+                        <button onclick="increaseReservationItem(${reservationIndex}, ${itemIndex})">
+                            +
+                        </button>
+
+                        <button
+                            class="danger-btn"
+                            onclick="removeReservationItem(${reservationIndex}, ${itemIndex})">
+                            Remover item
+                        </button>
+                    </div>
+                </div>
+            `)
+            .join("");
+
+        userReservationsList.innerHTML += `
+            <article class="user-reservation-card">
+                <h4>
+                    Reserva para ${escapeHTML(reservation.fairDateDisplay || reservation.fairDate || "próxima feira")}
+                </h4>
+
+                <p class="reservation-summary">
+                    Feita em ${escapeHTML(reservation.createdAt || "data não registrada")}
+                    • Total: ${formatCurrency(reservation.total || 0)}
+                </p>
+
+                ${itemsHTML}
+
+                <div class="reservation-actions">
+                    <button
+                        class="danger-btn"
+                        onclick="removeUserReservation(${reservationIndex})">
+                        Cancelar reserva
+                    </button>
+                </div>
+            </article>
+        `;
+    });
+
+    saveCurrentUser(user);
+}
+
+function renderUserComments(){
+    if(!userCommentsList){
+        return;
+    }
+
+    const user = getCurrentUser();
+    const currentKey = getCurrentUserKey();
+    const comments = getComments();
+
+    userCommentsList.innerHTML = "";
+
+    if(!user){
+        return;
+    }
+
+    const userComments = comments
+        .map((comment, index) => ({...comment, index}))
+        .filter(comment =>
+            comment.userKey === currentKey ||
+            (!comment.userKey && comment.user === user.name)
+        );
+
+    if(userComments.length === 0){
+        userCommentsList.innerHTML = `
+            <p class="empty-user-list">
+                Você ainda não publicou comentários.
+            </p>
+        `;
+        return;
+    }
+
+    userComments.forEach(comment => {
+        userCommentsList.innerHTML += `
+            <article class="user-comment-card">
+                <strong>
+                    ${escapeHTML(comment.user)}
+                </strong>
+
+                <p>
+                    ${escapeHTML(comment.text)}
+                </p>
+
+                <small class="comment-date">
+                    ${escapeHTML(comment.date)}
+                </small>
+
+                <div class="comment-actions">
+                    <button onclick="removeUserComment(${comment.index})">
+                        Remover comentário
+                    </button>
+                </div>
+            </article>
+        `;
+    });
+}
+
+function saveReservationChanges(user){
+    saveProducts();
+    saveCurrentUser(user);
+    renderProducts();
+    renderUserMenu();
+}
+
+function increaseReservationItem(reservationIndex, itemIndex){
+    const user = getCurrentUser();
+    const reservation = user?.reservations?.[reservationIndex];
+    const item = reservation?.items?.[itemIndex];
+
+    if(!user || !reservation || !item){
+        return;
+    }
+
+    const product = products.find(productItem => productItem.id === item.id);
+
+    if(!product || product.stock <= 0){
+        alert("Não há mais unidades disponíveis em estoque.");
+        return;
+    }
+
+    item.quantity++;
+    product.stock--;
+    updateReservationTotal(reservation);
+    saveReservationChanges(user);
+}
+
+function decreaseReservationItem(reservationIndex, itemIndex){
+    const user = getCurrentUser();
+    const reservation = user?.reservations?.[reservationIndex];
+    const item = reservation?.items?.[itemIndex];
+
+    if(!user || !reservation || !item){
+        return;
+    }
+
+    const product = products.find(productItem => productItem.id === item.id);
+
+    if(product){
+        product.stock++;
+    }
+
+    item.quantity--;
+
+    if(item.quantity <= 0){
+        reservation.items.splice(itemIndex, 1);
+    }
+
+    if(reservation.items.length === 0){
+        user.reservations.splice(reservationIndex, 1);
+    }else{
+        updateReservationTotal(reservation);
+    }
+
+    saveReservationChanges(user);
+}
+
+function removeReservationItem(reservationIndex, itemIndex){
+    const user = getCurrentUser();
+    const reservation = user?.reservations?.[reservationIndex];
+    const item = reservation?.items?.[itemIndex];
+
+    if(!user || !reservation || !item){
+        return;
+    }
+
+    const product = products.find(productItem => productItem.id === item.id);
+
+    if(product){
+        product.stock += item.quantity;
+    }
+
+    reservation.items.splice(itemIndex, 1);
+
+    if(reservation.items.length === 0){
+        user.reservations.splice(reservationIndex, 1);
+    }else{
+        updateReservationTotal(reservation);
+    }
+
+    saveReservationChanges(user);
+}
+
+function removeUserReservation(reservationIndex){
+    const user = getCurrentUser();
+    const reservation = user?.reservations?.[reservationIndex];
+
+    if(!user || !reservation){
+        return;
+    }
+
+    const confirmar = confirm("Deseja cancelar esta reserva?");
+
+    if(!confirmar){
+        return;
+    }
+
+    (reservation.items || []).forEach(item => {
+        const product = products.find(productItem => productItem.id === item.id);
+
+        if(product){
+            product.stock += item.quantity;
+        }
+    });
+
+    user.reservations.splice(reservationIndex, 1);
+    saveReservationChanges(user);
+}
+
+function removeUserComment(commentIndex){
+    const comments = getComments();
+
+    if(!comments[commentIndex]){
+        return;
+    }
+
+    comments.splice(commentIndex, 1);
+    saveComments(comments);
+    loadComments();
+    renderUserMenu();
+}
+
 if(loginBtn){
     loginBtn.addEventListener("click", () => {
         const user = getCurrentUser();
 
         if(user){
-            const sair = confirm(
-`Você está logado como:
-
-${user.name}
-
-Deseja sair?`
-            );
-
-            if(sair){
-                localStorage.removeItem("currentUser");
-                localStorage.removeItem("user");
-                loadUser();
-            }
-
+            openUserMenuModal();
             return;
         }
 
@@ -882,11 +1206,18 @@ Deseja sair?`
 
 if(saveUser){
     saveUser.addEventListener("click", () => {
-        const name = normalizeName(usernameInput.value);
+        const firstName = normalizeName(firstNameInput.value);
+        const lastName = normalizeName(lastNameInput.value);
+        const name = normalizeName(`${firstName} ${lastName}`);
         const password = passwordInput.value.trim();
 
-        if(name === ""){
+        if(firstName === ""){
             alert("Digite seu nome.");
+            return;
+        }
+
+        if(lastName === ""){
+            alert("Digite seu sobrenome.");
             return;
         }
 
@@ -917,7 +1248,8 @@ if(saveUser){
         localStorage.setItem("currentUser", key);
         localStorage.setItem("user", name);
 
-        usernameInput.value = "";
+        firstNameInput.value = "";
+        lastNameInput.value = "";
         passwordInput.value = "";
 
         loginModal.classList.remove("active");
@@ -928,9 +1260,65 @@ if(saveUser){
     });
 }
 
+if(closeUserMenu){
+    closeUserMenu.addEventListener("click", closeUserMenuModal);
+}
+
+if(changePasswordBtn){
+    changePasswordBtn.addEventListener("click", () => {
+        const user = getCurrentUser();
+
+        if(!user){
+            return;
+        }
+
+        const currentPassword = currentPasswordInput.value.trim();
+        const newPassword = newPasswordInput.value.trim();
+        const confirmPassword = confirmPasswordInput.value.trim();
+
+        if(currentPassword !== user.password){
+            alert("Senha atual incorreta.");
+            return;
+        }
+
+        if(newPassword === ""){
+            alert("Digite uma nova senha.");
+            return;
+        }
+
+        if(newPassword !== confirmPassword){
+            alert("A confirmação da senha não confere.");
+            return;
+        }
+
+        user.password = newPassword;
+        saveCurrentUser(user);
+
+        currentPasswordInput.value = "";
+        newPasswordInput.value = "";
+        confirmPasswordInput.value = "";
+
+        alert("Senha alterada com sucesso.");
+    });
+}
+
+if(logoutUserBtn){
+    logoutUserBtn.addEventListener("click", () => {
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("user");
+        closeUserMenuModal();
+        loadUser();
+        renderCart();
+    });
+}
+
 window.addEventListener("click", event => {
     if(event.target === loginModal){
         loginModal.classList.remove("active");
+    }
+
+    if(event.target === userMenuModal){
+        closeUserMenuModal();
     }
 });
 
@@ -946,7 +1334,7 @@ function loadComments(){
         return;
     }
 
-    const comments = JSON.parse(localStorage.getItem("comments")) || [];
+    const comments = getComments();
 
     commentsList.innerHTML = "";
 
@@ -972,15 +1360,16 @@ if(commentBtn){
         }
 
         const user = getCurrentUser();
-        const comments = JSON.parse(localStorage.getItem("comments")) || [];
+        const comments = getComments();
 
         comments.unshift({
             user: user ? user.name : "Visitante",
+            userKey: user ? getCurrentUserKey() : null,
             text: text,
             date: new Date().toLocaleString("pt-BR")
         });
 
-        localStorage.setItem("comments", JSON.stringify(comments));
+        saveComments(comments);
 
         input.value = "";
 
