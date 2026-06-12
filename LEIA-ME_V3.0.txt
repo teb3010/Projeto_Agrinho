@@ -1,0 +1,12 @@
+Feira de Pitanga V3.0
+
+Pacote gerado a partir do projeto enviado.
+
+Inclui:
+- Ajustes iniciais V3.0
+- Campo de senha no login
+- Correções visuais para modo escuro
+- Estrutura preparada para próximas melhorias
+
+Recomendação:
+Testar localmente e no GitHub Pages.
