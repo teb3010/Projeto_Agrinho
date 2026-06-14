@@ -968,6 +968,7 @@ function openUserMenuModal(){
     }
 
     resetReservationDraft(getCurrentUser());
+    closeAllUserMenuSections();
     renderUserMenu();
     userMenuModal.classList.add("active");
 }
@@ -985,6 +986,16 @@ function showUserMenuSection(sectionId){
 
     document.querySelectorAll(".user-menu-section").forEach(section => {
         section.classList.toggle("active", section.id === sectionId);
+    });
+}
+
+function closeAllUserMenuSections(){
+    userMenuOptions.forEach(option => {
+        option.classList.remove("active");
+    });
+
+    document.querySelectorAll(".user-menu-section").forEach(section => {
+        section.classList.remove("active");
     });
 }
 
@@ -1527,15 +1538,44 @@ function loadComments(){
 
     commentsList.innerHTML = "";
 
-    comments.forEach(comment => {
+    comments.forEach((comment, index) => {
+        const visitorComment = !comment.userKey && comment.user === "Visitante";
+
         commentsList.innerHTML += `
             <div class="comment-card">
                 <strong>${escapeHTML(comment.user)}</strong>
                 <p>${escapeHTML(comment.text)}</p>
                 <small>${escapeHTML(comment.date)}</small>
+
+                ${visitorComment ? `
+                    <div class="comment-actions">
+                        <button onclick="removePublicComment(${index})">
+                            Remover comentário
+                        </button>
+                    </div>
+                ` : ""}
             </div>
         `;
     });
+}
+
+function removePublicComment(commentIndex){
+    const comments = getComments();
+    const comment = comments[commentIndex];
+
+    if(!comment || comment.userKey || comment.user !== "Visitante"){
+        return;
+    }
+
+    const confirmar = confirm("Deseja remover este comentário de visitante?");
+
+    if(!confirmar){
+        return;
+    }
+
+    comments.splice(commentIndex, 1);
+    saveComments(comments);
+    loadComments();
 }
 
 if(commentBtn){
