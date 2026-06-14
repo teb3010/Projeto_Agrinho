@@ -182,6 +182,10 @@
 
         </p>
 
+        <span id="fairTime">
+
+        </span>
+
         <span>
 
             📍 Praça da Igreja Sant'Ana
@@ -506,6 +510,31 @@
 
             </h2>
 
+            <div class="auth-tabs">
+
+                <button id="loginModeBtn"
+                    class="auth-tab active">
+
+                    Entrar
+
+                </button>
+
+                <button id="signupModeBtn"
+                    class="auth-tab">
+
+                    Cadastrar
+
+                </button>
+
+            </div>
+
+            <p id="authHint"
+                class="auth-hint">
+
+                Entre com nome, sobrenome e senha.
+
+            </p>
+
             <input
                 type="text"
                 id="firstName"
@@ -565,9 +594,17 @@
 
             </div>
 
-            <div class="user-menu-grid">
+            <div class="user-menu-list">
 
-                <section class="user-menu-section">
+                <button class="user-menu-option active"
+                    data-user-section="accountPanel">
+
+                    Dados da conta
+
+                </button>
+
+                <section id="accountPanel"
+                    class="user-menu-section active">
 
                     <h3>
 
@@ -598,7 +635,15 @@
 
                 </section>
 
-                <section class="user-menu-section">
+                <button class="user-menu-option"
+                    data-user-section="reservationsPanel">
+
+                    Minhas reservas
+
+                </button>
+
+                <section id="reservationsPanel"
+                    class="user-menu-section">
 
                     <h3>
 
@@ -610,9 +655,24 @@
 
                     </div>
 
+                    <button id="saveReservationChanges"
+                        class="save-reservations-btn">
+
+                        Salvar alterações
+
+                    </button>
+
                 </section>
 
-                <section class="user-menu-section">
+                <button class="user-menu-option"
+                    data-user-section="commentsPanel">
+
+                    Meus comentários
+
+                </button>
+
+                <section id="commentsPanel"
+                    class="user-menu-section">
 
                     <h3>
 

@@ -3,6 +3,13 @@
    SCRIPT.JS
 ================================== */
 
+const PASSWORD_MIN_LENGTH = 6;
+
+let authMode = "login";
+let reservationDraft = null;
+let reservationDraftChanged = false;
+let readingQueue = [];
+
 // ========================
 // PRODUTOS
 // ========================
@@ -303,10 +310,16 @@ function getNextFairInfo(){
         next.setDate(today.getDate() + ((6 - day + 7) % 7));
     }
 
+    const nextDay = next.getDay();
+    const schedule = nextDay === 3
+        ? "Horário: quarta-feira, das 13h às 17h"
+        : "Horário: sábado, das 8h às 12h";
+
     return {
         date: next,
         iso: formatISODate(next),
-        display: next.toLocaleDateString("pt-BR")
+        display: next.toLocaleDateString("pt-BR"),
+        schedule: schedule
     };
 }
 
@@ -373,6 +386,45 @@ function getReservationTotal(reservation){
 
 function updateReservationTotal(reservation){
     reservation.total = getReservationTotal(reservation);
+}
+
+function cloneReservations(reservations){
+    return JSON.parse(JSON.stringify(reservations || []));
+}
+
+function getQuantityByProduct(reservations){
+    return (reservations || []).reduce((totals, reservation) => {
+        (reservation.items || []).forEach(item => {
+            totals[item.id] = (totals[item.id] || 0) + item.quantity;
+        });
+
+        return totals;
+    }, {});
+}
+
+function getReservationDraft(user){
+    if(!reservationDraft){
+        reservationDraft = cloneReservations(user.reservations || []);
+        reservationDraftChanged = false;
+    }
+
+    return reservationDraft;
+}
+
+function markReservationDraftChanged(){
+    reservationDraftChanged = true;
+}
+
+function resetReservationDraft(user){
+    reservationDraft = cloneReservations(user?.reservations || []);
+    reservationDraftChanged = false;
+}
+
+function getDraftProductLimit(user, productId){
+    const originalTotals = getQuantityByProduct(user.reservations || []);
+    const product = products.find(productItem => productItem.id === productId);
+
+    return (originalTotals[productId] || 0) + (product ? product.stock : 0);
 }
 
 function getComments(){
@@ -841,7 +893,8 @@ Cliente: ${user.name}
 Itens reservados: ${getCartItemsCount()}
 Valor total: ${formatCurrency(total)}
 Retirada: Praça da Igreja Sant'Ana
-Data da feira: ${fair.display}`
+Data da feira: ${fair.display}
+${fair.schedule}`
         );
 
         cart = [];
@@ -861,6 +914,9 @@ const saveUser = document.getElementById("saveUser");
 const firstNameInput = document.getElementById("firstName");
 const lastNameInput = document.getElementById("lastName");
 const passwordInput = document.getElementById("password");
+const loginModeBtn = document.getElementById("loginModeBtn");
+const signupModeBtn = document.getElementById("signupModeBtn");
+const authHint = document.getElementById("authHint");
 const userMenuModal = document.getElementById("userMenuModal");
 const closeUserMenu = document.getElementById("closeUserMenu");
 const userMenuName = document.getElementById("userMenuName");
@@ -871,6 +927,8 @@ const newPasswordInput = document.getElementById("newPassword");
 const confirmPasswordInput = document.getElementById("confirmPassword");
 const changePasswordBtn = document.getElementById("changePassword");
 const logoutUserBtn = document.getElementById("logoutUser");
+const saveReservationChangesBtn = document.getElementById("saveReservationChanges");
+const userMenuOptions = document.querySelectorAll(".user-menu-option[data-user-section]");
 
 function openLoginModal(){
     if(loginModal){
@@ -882,11 +940,34 @@ function openLoginModal(){
     }
 }
 
+function setAuthMode(mode){
+    authMode = mode;
+
+    if(loginModeBtn){
+        loginModeBtn.classList.toggle("active", mode === "login");
+    }
+
+    if(signupModeBtn){
+        signupModeBtn.classList.toggle("active", mode === "signup");
+    }
+
+    if(saveUser){
+        saveUser.textContent = mode === "login" ? "Entrar" : "Cadastrar";
+    }
+
+    if(authHint){
+        authHint.textContent = mode === "login"
+            ? "Entre com nome, sobrenome e senha."
+            : `Cadastre nome, sobrenome e senha com no mínimo ${PASSWORD_MIN_LENGTH} caracteres.`;
+    }
+}
+
 function openUserMenuModal(){
     if(!userMenuModal){
         return;
     }
 
+    resetReservationDraft(getCurrentUser());
     renderUserMenu();
     userMenuModal.classList.add("active");
 }
@@ -895,6 +976,16 @@ function closeUserMenuModal(){
     if(userMenuModal){
         userMenuModal.classList.remove("active");
     }
+}
+
+function showUserMenuSection(sectionId){
+    userMenuOptions.forEach(option => {
+        option.classList.toggle("active", option.dataset.userSection === sectionId);
+    });
+
+    document.querySelectorAll(".user-menu-section").forEach(section => {
+        section.classList.toggle("active", section.id === sectionId);
+    });
 }
 
 function loadUser(){
@@ -934,16 +1025,23 @@ function renderUserReservations(user){
         return;
     }
 
-    const reservations = user.reservations || [];
+    const reservations = getReservationDraft(user);
 
     userReservationsList.innerHTML = "";
+
+    if(saveReservationChangesBtn){
+        saveReservationChangesBtn.disabled = !reservationDraftChanged;
+        saveReservationChangesBtn.textContent = reservationDraftChanged
+            ? "Salvar alterações"
+            : "Nenhuma alteração pendente";
+    }
 
     if(reservations.length === 0){
         userReservationsList.innerHTML = `
             <p class="empty-user-list">
                 Você ainda não possui reservas finalizadas.
             </p>
-        `;
+            `;
         return;
     }
 
@@ -1008,7 +1106,13 @@ function renderUserReservations(user){
         `;
     });
 
-    saveCurrentUser(user);
+    if(reservationDraftChanged){
+        userReservationsList.innerHTML += `
+            <p class="reservation-status">
+                Existem alterações pendentes. Clique em salvar para aplicar.
+            </p>
+        `;
+    }
 }
 
 function renderUserComments(){
@@ -1068,47 +1172,41 @@ function renderUserComments(){
 }
 
 function saveReservationChanges(user){
-    saveProducts();
-    saveCurrentUser(user);
-    renderProducts();
+    markReservationDraftChanged();
     renderUserMenu();
 }
 
 function increaseReservationItem(reservationIndex, itemIndex){
     const user = getCurrentUser();
-    const reservation = user?.reservations?.[reservationIndex];
+    const draft = user ? getReservationDraft(user) : [];
+    const reservation = draft[reservationIndex];
     const item = reservation?.items?.[itemIndex];
 
     if(!user || !reservation || !item){
         return;
     }
 
-    const product = products.find(productItem => productItem.id === item.id);
+    const draftTotals = getQuantityByProduct(draft);
+    const productLimit = getDraftProductLimit(user, item.id);
 
-    if(!product || product.stock <= 0){
+    if((draftTotals[item.id] || 0) >= productLimit){
         alert("Não há mais unidades disponíveis em estoque.");
         return;
     }
 
     item.quantity++;
-    product.stock--;
     updateReservationTotal(reservation);
     saveReservationChanges(user);
 }
 
 function decreaseReservationItem(reservationIndex, itemIndex){
     const user = getCurrentUser();
-    const reservation = user?.reservations?.[reservationIndex];
+    const draft = user ? getReservationDraft(user) : [];
+    const reservation = draft[reservationIndex];
     const item = reservation?.items?.[itemIndex];
 
     if(!user || !reservation || !item){
         return;
-    }
-
-    const product = products.find(productItem => productItem.id === item.id);
-
-    if(product){
-        product.stock++;
     }
 
     item.quantity--;
@@ -1118,7 +1216,7 @@ function decreaseReservationItem(reservationIndex, itemIndex){
     }
 
     if(reservation.items.length === 0){
-        user.reservations.splice(reservationIndex, 1);
+        draft.splice(reservationIndex, 1);
     }else{
         updateReservationTotal(reservation);
     }
@@ -1128,23 +1226,18 @@ function decreaseReservationItem(reservationIndex, itemIndex){
 
 function removeReservationItem(reservationIndex, itemIndex){
     const user = getCurrentUser();
-    const reservation = user?.reservations?.[reservationIndex];
+    const draft = user ? getReservationDraft(user) : [];
+    const reservation = draft[reservationIndex];
     const item = reservation?.items?.[itemIndex];
 
     if(!user || !reservation || !item){
         return;
     }
 
-    const product = products.find(productItem => productItem.id === item.id);
-
-    if(product){
-        product.stock += item.quantity;
-    }
-
     reservation.items.splice(itemIndex, 1);
 
     if(reservation.items.length === 0){
-        user.reservations.splice(reservationIndex, 1);
+        draft.splice(reservationIndex, 1);
     }else{
         updateReservationTotal(reservation);
     }
@@ -1154,7 +1247,8 @@ function removeReservationItem(reservationIndex, itemIndex){
 
 function removeUserReservation(reservationIndex){
     const user = getCurrentUser();
-    const reservation = user?.reservations?.[reservationIndex];
+    const draft = user ? getReservationDraft(user) : [];
+    const reservation = draft[reservationIndex];
 
     if(!user || !reservation){
         return;
@@ -1166,16 +1260,62 @@ function removeUserReservation(reservationIndex){
         return;
     }
 
-    (reservation.items || []).forEach(item => {
-        const product = products.find(productItem => productItem.id === item.id);
+    draft.splice(reservationIndex, 1);
+    saveReservationChanges(user);
+}
+
+function applyReservationDraftChanges(){
+    const user = getCurrentUser();
+
+    if(!user || !reservationDraft){
+        return;
+    }
+
+    const originalTotals = getQuantityByProduct(user.reservations || []);
+    const draft = reservationDraft
+        .filter(reservation => (reservation.items || []).length > 0)
+        .map(reservation => {
+            updateReservationTotal(reservation);
+            return reservation;
+        });
+    const draftTotals = getQuantityByProduct(draft);
+    const productIds = new Set([
+        ...Object.keys(originalTotals),
+        ...Object.keys(draftTotals)
+    ]);
+
+    for(const productId of productIds){
+        const numericProductId = Number(productId);
+        const product = products.find(productItem => productItem.id === numericProductId);
+        const originalQuantity = originalTotals[productId] || 0;
+        const draftQuantity = draftTotals[productId] || 0;
+        const difference = draftQuantity - originalQuantity;
+
+        if(difference > 0 && (!product || product.stock < difference)){
+            alert("Não há estoque suficiente para salvar uma das alterações.");
+            return;
+        }
+    }
+
+    productIds.forEach(productId => {
+        const numericProductId = Number(productId);
+        const product = products.find(productItem => productItem.id === numericProductId);
+        const originalQuantity = originalTotals[productId] || 0;
+        const draftQuantity = draftTotals[productId] || 0;
+        const difference = draftQuantity - originalQuantity;
 
         if(product){
-            product.stock += item.quantity;
+            product.stock -= difference;
         }
     });
 
-    user.reservations.splice(reservationIndex, 1);
-    saveReservationChanges(user);
+    user.reservations = draft;
+    saveProducts();
+    saveCurrentUser(user);
+    resetReservationDraft(user);
+    renderProducts();
+    renderUserMenu();
+    alert("Alterações das reservas salvas com sucesso.");
 }
 
 function removeUserComment(commentIndex){
@@ -1189,6 +1329,28 @@ function removeUserComment(commentIndex){
     saveComments(comments);
     loadComments();
     renderUserMenu();
+}
+
+if(loginModeBtn){
+    loginModeBtn.addEventListener("click", () => {
+        setAuthMode("login");
+    });
+}
+
+if(signupModeBtn){
+    signupModeBtn.addEventListener("click", () => {
+        setAuthMode("signup");
+    });
+}
+
+userMenuOptions.forEach(option => {
+    option.addEventListener("click", () => {
+        showUserMenuSection(option.dataset.userSection);
+    });
+});
+
+if(saveReservationChangesBtn){
+    saveReservationChangesBtn.addEventListener("click", applyReservationDraftChanges);
 }
 
 if(loginBtn){
@@ -1226,20 +1388,37 @@ if(saveUser){
             return;
         }
 
-        const users = getUsers();
-        const key = getUserKey(name);
-
-        if(users[key] && users[key].password !== password){
-            alert("Senha incorreta para este nome.");
+        if(password.length < PASSWORD_MIN_LENGTH){
+            alert(`A senha precisa ter no mínimo ${PASSWORD_MIN_LENGTH} caracteres.`);
             return;
         }
 
-        if(!users[key]){
+        const users = getUsers();
+        const key = getUserKey(name);
+
+        if(authMode === "signup"){
+            if(users[key]){
+                alert("Já existe uma conta com este nome e sobrenome. Use a opção Entrar.");
+                return;
+            }
+
             users[key] = {
                 name: name,
                 password: password,
                 reservations: []
             };
+        }
+
+        if(authMode === "login"){
+            if(!users[key]){
+                alert("Conta não encontrada. Use a opção Cadastrar.");
+                return;
+            }
+
+            if(users[key].password !== password){
+                alert("Senha incorreta para este usuário.");
+                return;
+            }
         }
 
         users[key].name = name;
@@ -1256,7 +1435,10 @@ if(saveUser){
         loadUser();
         renderCart();
 
-        alert(`Bem-vindo(a), ${name}!`);
+        alert(authMode === "signup"
+            ? `Cadastro realizado. Bem-vindo(a), ${name}!`
+            : `Bem-vindo(a), ${name}!`
+        );
     });
 }
 
@@ -1286,6 +1468,11 @@ if(changePasswordBtn){
             return;
         }
 
+        if(newPassword.length < PASSWORD_MIN_LENGTH){
+            alert(`A nova senha precisa ter no mínimo ${PASSWORD_MIN_LENGTH} caracteres.`);
+            return;
+        }
+
         if(newPassword !== confirmPassword){
             alert("A confirmação da senha não confere.");
             return;
@@ -1306,6 +1493,8 @@ if(logoutUserBtn){
     logoutUserBtn.addEventListener("click", () => {
         localStorage.removeItem("currentUser");
         localStorage.removeItem("user");
+        reservationDraft = null;
+        reservationDraftChanged = false;
         closeUserMenuModal();
         loadUser();
         renderCart();
@@ -1382,12 +1571,19 @@ if(commentBtn){
 // ========================
 
 const fairDate = document.getElementById("fairDate");
+const fairTime = document.getElementById("fairTime");
 
 if(fairDate){
+    const fair = getNextFairInfo();
+
     fairDate.innerHTML = `
         Próxima feira:
-        <strong>${getNextFairDate()}</strong>
+        <strong>${fair.display}</strong>
     `;
+
+    if(fairTime){
+        fairTime.textContent = fair.schedule;
+    }
 }
 
 // ========================
@@ -1477,22 +1673,63 @@ function getReadableText(){
         .join("\n\n");
 }
 
+function splitReadableText(text){
+    return text
+        .split(/\n+|(?<=[.!?])\s+/)
+        .map(part => part.trim())
+        .filter(Boolean)
+        .reduce((chunks, part) => {
+            if(chunks.length === 0){
+                chunks.push(part);
+                return chunks;
+            }
+
+            const lastChunk = chunks[chunks.length - 1] || "";
+
+            if(lastChunk.length + part.length < 220){
+                chunks[chunks.length - 1] = `${lastChunk} ${part}`.trim();
+            }else{
+                chunks.push(part);
+            }
+
+            return chunks;
+        }, []);
+}
+
+function speakNextChunk(){
+    if(readingQueue.length === 0){
+        return;
+    }
+
+    const speech = new SpeechSynthesisUtterance(readingQueue.shift());
+
+    speech.lang = "pt-BR";
+    speech.rate = 1;
+    speech.pitch = 1;
+    speech.onend = speakNextChunk;
+
+    speechSynthesis.speak(speech);
+}
+
 if(readPage){
     readPage.addEventListener("click", () => {
+        if(!("speechSynthesis" in window)){
+            alert("A leitura por voz não está disponível neste navegador.");
+            return;
+        }
+
         speechSynthesis.cancel();
+        speechSynthesis.resume();
 
-        const speech = new SpeechSynthesisUtterance(getReadableText());
+        readingQueue = splitReadableText(getReadableText());
 
-        speech.lang = "pt-BR";
-        speech.rate = 1;
-        speech.pitch = 1;
-
-        speechSynthesis.speak(speech);
+        speakNextChunk();
     });
 }
 
 if(stopReading){
     stopReading.addEventListener("click", () => {
+        readingQueue = [];
         speechSynthesis.cancel();
     });
 }
@@ -1554,6 +1791,7 @@ window.resetFeira = function(){
 // INICIALIZAÇÃO FINAL
 // ========================
 
+setAuthMode("login");
 renderProducts();
 updateCartCount();
 renderCart();
